@@ -1,30 +1,145 @@
-# Dune Africa design
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+# 🧠 Starklytics — Starknet Analytics & Research Platform
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/ndifreke000s-projects/v0-dune-africa-design-as)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/RdQTuBgvoxx)
+**Starklytics** is a decentralized data analytics platform built for Starknet. It empowers analysts, researchers, and stakeholders to build and share insights using SQL and Python — backed by onchain data, STRK-based subscriptions, and deep social integrations.
 
-## Overview
+Live site: _Coming soon_  
+Tech Stack: React + TypeScript + Tailwind CSS + Supabase + Edge Functions + Starknet  
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+---
 
-## Deployment
+## 🚀 Features
 
-Your project is live at:
+### 🔍 Query Engine  
+- Fork, execute, and publish SQL queries  
+- Public/private visibility controls  
+- Query performance tracking
 
-**[https://vercel.com/ndifreke000s-projects/v0-dune-africa-design-as](https://vercel.com/ndifreke000s-projects/v0-dune-africa-design-as)**
+### 📓 Python Notebook Sandbox  
+- Build Jupyter-style notebooks using Python  
+- Share insights with live visualizations  
+- Versioning and comments supported
 
-## Build your app
+### 🧑‍💻 Social & Identity  
+- Wallet login via Starknet (SIWE)  
+- OAuth linking for GitHub and Twitter  
+- Social profile with contributions, repos, followers
 
-Continue building your app on:
+### 🧠 Marketplace  
+- Hire analysts or post research bounties  
+- Rate, review, and track completed work
 
-**[https://v0.dev/chat/projects/RdQTuBgvoxx](https://v0.dev/chat/projects/RdQTuBgvoxx)**
+### 🏆 Hackathon System  
+- Submit queries and notebooks to compete  
+- Judge, rate, and award top contributors
 
-## How It Works
+### 💳 STRK-Powered Subscriptions  
+- Tiered access plans paid with STRK  
+- Onchain verification of payments  
+- Access gates for premium datasets and tools
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+### 🔔 Realtime Notifications  
+- Comments, forks, messages & reviews  
+- Admin alerts for flagged content
+
+---
+
+## 📄 Pages & Navigation
+
+| Page                      | Path              | Auth Required | Notes |
+|---------------------------|-------------------|---------------|-------|
+| Home                      | `/`               | ❌            | Landing page overview |
+| Explore Queries           | `/queries`        | ❌            | Public query explorer |
+| View Query                | `/query/[id]`     | ❌/✅         | Depends on visibility |
+| Create/Edit Query         | `/query/new`      | ✅            | SQL editor with run & fork |
+| Notebooks                 | `/notebooks`      | ❌            | Browse notebooks |
+| View Notebook             | `/notebook/[id]`  | ❌/✅         | Notebook viewer |
+| Dashboard                 | `/dashboard`      | ✅            | User's contributions |
+| Profile                   | `/profile`        | ✅            | GitHub, Twitter links |
+| Marketplace               | `/marketplace`    | ✅            | Post/apply for gigs |
+| Hackathons                | `/hackathons`     | ❌            | List active competitions |
+| Subscriptions             | `/pricing`        | ❌            | Choose a STRK-based plan |
+| Admin Panel               | `/admin`          | 🔐 Admin only | For moderation, stats |
+
+---
+
+## 🧩 Supabase Architecture
+
+### Auth
+- SIWE login for Starknet wallet
+- GitHub & Twitter OAuth  
+- RLS-based access enforcement
+
+### Tables
+- `users`, `queries`, `notebooks`, `subscriptions`, `wallets`, `projects`, `applications`, `scores`, `notifications`
+
+### Edge Functions
+- `run_query()` — sandbox SQL runner  
+- `run_notebook()` — executes notebook in container  
+- `verify_strk_payment()` — validates STRK tx  
+- `link_github()`, `link_twitter()` — fetch social metadata
+
+### Storage
+- Notebook files  
+- Result exports  
+- Profile images
+
+---
+
+## 🛠️ Getting Started (Dev)
+
+### 1. Clone Repo  
+```bash
+git clone https://github.com/your-org/starklytics.git
+cd starklytics
+````
+
+### 2. Install Dependencies
+
+```bash
+pnpm install
+```
+
+### 3. Set Up Supabase
+
+* Create a project on [Supabase](https://supabase.io)
+* Copy `.env.example` to `.env.local` and fill with your keys
+* Apply SQL schema via Supabase SQL Editor or CLI
+
+### 4. Run Dev Server
+
+```bash
+pnpm dev
+```
+
+---
+
+## 🔗 Connect Wallet, GitHub, Twitter
+
+* **Wallet**: Click "Connect Wallet" → Sign SIWE → Your address is linked.
+* **GitHub**: Go to Profile → Click "Link GitHub" → OAuth flow.
+* **Twitter**: Go to Profile → Click "Link Twitter" → OAuth + Metadata pulled.
+
+---
+
+## 💡 Contributing
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feat/new-feature`)
+3. Commit and push
+4. Open a PR
+
+---
+
+## 🛡 Security
+
+* RLS ensures strict data access control
+* OAuth & SIWE ensure verified identities
+* All user content is validated and sandboxed
+
+---
+
+## 📜 License
+
+MIT License © 2025 Starklytics Contributors
+Built with ❤️ for the Starknet ecosystem.
