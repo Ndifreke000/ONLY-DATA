@@ -87,15 +87,16 @@
 
 ::-webkit-scrollbar-track {
   background: hsl(var(--muted));
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
-  border-radius: 4px;
+  background: linear-gradient(135deg, hsl(var(--muted-foreground) / 0.3), hsl(var(--muted-foreground) / 0.5));
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+  background: linear-gradient(135deg, hsl(var(--muted-foreground) / 0.5), hsl(var(--muted-foreground) / 0.7));
 }
 
 /* Smooth transitions for theme switching */
@@ -125,23 +126,63 @@
 }
 
 @layer components {
-  /* Button hover effects */
-  .button-hover-lift {
-    @apply transition-all duration-200 hover:scale-[1.02] hover:shadow-lg;
+  /* Modern glass morphism effects */
+  .glass {
+    @apply bg-background/80 backdrop-blur-xl border border-border/50 shadow-lg shadow-black/5;
   }
 
-  /* Card hover effects */
-  .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/5;
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-lg shadow-black/5;
+  }
+
+  /* Modern button effects */
+  .button-modern {
+    @apply relative overflow-hidden rounded-xl transition-all duration-200 hover:scale-[1.02] hover:shadow-lg;
+  }
+
+  .button-modern::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] transition-transform duration-500;
+  }
+
+  .button-modern:hover::before {
+    @apply translate-x-[100%];
   }
 
   /* Gradient text utility */
   .gradient-text {
-    @apply bg-gradient-to-r from-[#5C6AC4] to-[#22D3EE] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#06b6d4] bg-clip-text text-transparent;
+  }
+
+  /* Modern card hover effects */
+  .card-modern {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10;
+  }
+
+  /* Floating animation */
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Pulse glow effect */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+
+  /* Enhanced focus states for accessibility */
+  .focus-modern:focus-visible {
+    @apply outline-none ring-2 ring-[#6366f1] ring-offset-2 ring-offset-background;
+  }
+
+  /* Modern loading states */
+  .loading-skeleton {
+    @apply animate-pulse bg-gradient-to-r from-muted via-muted/50 to-muted;
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
   }
 }
 
-/* Animation utilities */
+/* Modern animations */
 @keyframes float {
   0%,
   100% {
@@ -152,39 +193,40 @@
   }
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes pulse-slow {
-  0%,
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  }
   100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
   }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
-@layer utilities {
-  /* Glass morphism effect */
-  .glass {
-    @apply bg-background/80 backdrop-blur-md border border-border/50;
-  }
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
 
-  /* Container responsive padding */
-  .container {
-    @apply px-4 sm:px-6 lg:px-8;
-  }
+/* Modern grid patterns */
+.grid-pattern {
+  background-image: linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 /* Text selection styling */
 ::selection {
-  background: hsl(var(--primary) / 0.2);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
   color: hsl(var(--foreground));
 }
 
@@ -192,5 +234,25 @@
 @media print {
   .no-print {
     display: none !important;
+  }
+}
+
+/* Modern responsive utilities */
+@layer utilities {
+  .container-modern {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Improved mobile touch targets */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
   }
 }

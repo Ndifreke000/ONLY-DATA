@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { getUserNotifications, subscribeToNotifications, markNotificationAsRead } from "@/lib/supabase/client"
 import { useAuth } from "./use-auth"
 import type { Database } from "@/lib/supabase/database.types"
+import type { RealtimeChannel } from "@supabase/supabase-js"
 
 type Notification = Database["public"]["Tables"]["notifications"]["Row"]
 
@@ -12,6 +13,7 @@ export function useNotifications() {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
   const [unreadCount, setUnreadCount] = useState(0)
+  const subscriptionRef = useRef<RealtimeChannel | null>(null)
 
   useEffect(() => {
     if (!user) {
@@ -23,18 +25,31 @@ export function useNotifications() {
 
     loadNotifications()
 
+    // Clean up existing subscription before creating new one
+    if (subscriptionRef.current) {
+      subscriptionRef.current.unsubscribe()
+      subscriptionRef.current = null
+    }
+
     // Subscribe to real-time notifications
-    const subscription = subscribeToNotifications(user.id, (payload) => {
-      if (payload.eventType === "INSERT") {
-        setNotifications((prev) => [payload.new, ...prev])
-        setUnreadCount((prev) => prev + 1)
-      }
-    })
+    try {
+      subscriptionRef.current = subscribeToNotifications(user.id, (payload) => {
+        if (payload?.eventType === "INSERT" && payload?.new) {
+          setNotifications((prev) => [payload.new, ...prev])
+          setUnreadCount((prev) => prev + 1)
+        }
+      })
+    } catch (error) {
+      console.error("Error setting up notifications subscription:", error)
+    }
 
     return () => {
-      subscription.unsubscribe()
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe()
+        subscriptionRef.current = null
+      }
     }
-  }, [user])
+  }, [user]) // Updated to depend on user object instead of user.id
 
   const loadNotifications = async () => {
     if (!user) return

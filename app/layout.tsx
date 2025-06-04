@@ -7,6 +7,7 @@ import { Header } from "@/components/header/header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { Toaster } from "sonner"
+import { HackathonBanner } from "@/components/hackathon/hackathon-banner"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,8 +20,17 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "DATA - Starknet Analytics Platform",
-  description: "Advanced Starknet data analytics and contract extraction platform",
+  title: "Starklytics - Your Home for Only Data",
+  description:
+    "A cutting-edge platform for uploading, analyzing, and visualizing smart contract data, leveraging Starknet's scalability and zero-knowledge technology.",
+  keywords: ["Starknet", "Smart Contracts", "Data Analytics", "ZK Technology", "Blockchain", "DeFi"],
+  authors: [{ name: "Starklytics Team" }],
+  openGraph: {
+    title: "Starklytics - Your Home for Only Data",
+    description: "Cutting-edge smart contract data analytics on Starknet",
+    type: "website",
+    url: "https://starklytics.com",
+  },
     generator: 'v0.dev'
 }
 
@@ -37,9 +47,10 @@ export default function RootLayout({
             <div className="flex h-screen overflow-hidden">
               <DuneSidebar />
               <SidebarInset className="flex flex-col min-w-0">
+                <HackathonBanner />
                 <Header />
                 <main className="flex-1 overflow-auto">
-                  <div className="h-full w-full p-6">{children}</div>
+                  <div className="h-full w-full">{children}</div>
                 </main>
               </SidebarInset>
             </div>

@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { getActiveHackathons, getUpcomingHackathons, subscribeToHackathonUpdates } from "@/lib/supabase/client"
 import type { Database } from "@/lib/supabase/database.types"
+import type { RealtimeChannel } from "@supabase/supabase-js"
 
 type Hackathon = Database["public"]["Tables"]["hackathons"]["Row"]
 
@@ -10,41 +11,66 @@ export function useHackathons() {
   const [activeHackathons, setActiveHackathons] = useState<Hackathon[]>([])
   const [upcomingHackathons, setUpcomingHackathons] = useState<Hackathon[]>([])
   const [loading, setLoading] = useState(true)
+  const subscriptionRef = useRef<RealtimeChannel | null>(null)
+  const isSubscribed = useRef(false)
 
   useEffect(() => {
     loadHackathons()
 
-    // Subscribe to real-time hackathon updates
-    const subscription = subscribeToHackathonUpdates((payload) => {
-      if (payload.eventType === "INSERT") {
-        const newHackathon = payload.new as Hackathon
-        if (newHackathon.status === "active") {
-          setActiveHackathons((prev) => [...prev, newHackathon])
-        } else if (newHackathon.status === "upcoming") {
-          setUpcomingHackathons((prev) => [...prev, newHackathon])
+    // Only create subscription if not already subscribed
+    if (!isSubscribed.current) {
+      try {
+        // Clean up existing subscription if it exists
+        if (subscriptionRef.current) {
+          subscriptionRef.current.unsubscribe()
+          subscriptionRef.current = null
         }
-      } else if (payload.eventType === "UPDATE") {
-        const updatedHackathon = payload.new as Hackathon
 
-        // Update in appropriate list based on status
-        setActiveHackathons((prev) =>
-          updatedHackathon.status === "active"
-            ? prev.map((h) => (h.id === updatedHackathon.id ? updatedHackathon : h))
-            : prev.filter((h) => h.id !== updatedHackathon.id),
-        )
+        // Create a new subscription with a unique ID to prevent conflicts
+        const uniqueId = `hackathons-${Math.random().toString(36).substring(2, 9)}`
+        const subscription = subscribeToHackathonUpdates(uniqueId, (payload) => {
+          if (!payload || typeof payload !== "object") return
 
-        setUpcomingHackathons((prev) =>
-          updatedHackathon.status === "upcoming"
-            ? prev.map((h) => (h.id === updatedHackathon.id ? updatedHackathon : h))
-            : prev.filter((h) => h.id !== updatedHackathon.id),
-        )
+          if (payload.eventType === "INSERT" && payload.new) {
+            const newHackathon = payload.new as Hackathon
+            if (newHackathon.status === "active") {
+              setActiveHackathons((prev) => [...prev, newHackathon])
+            } else if (newHackathon.status === "upcoming") {
+              setUpcomingHackathons((prev) => [...prev, newHackathon])
+            }
+          } else if (payload.eventType === "UPDATE" && payload.new) {
+            const updatedHackathon = payload.new as Hackathon
+
+            // Update in appropriate list based on status
+            setActiveHackathons((prev) =>
+              updatedHackathon.status === "active"
+                ? prev.map((h) => (h.id === updatedHackathon.id ? updatedHackathon : h))
+                : prev.filter((h) => h.id !== updatedHackathon.id),
+            )
+
+            setUpcomingHackathons((prev) =>
+              updatedHackathon.status === "upcoming"
+                ? prev.map((h) => (h.id === updatedHackathon.id ? updatedHackathon : h))
+                : prev.filter((h) => h.id !== updatedHackathon.id),
+            )
+          }
+        })
+
+        subscriptionRef.current = subscription
+        isSubscribed.current = true
+      } catch (error) {
+        console.error("Error setting up hackathon subscription:", error)
       }
-    })
+    }
 
     return () => {
-      subscription.unsubscribe()
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe()
+        subscriptionRef.current = null
+        isSubscribed.current = false
+      }
     }
-  }, [])
+  }, []) // Empty dependency array to run only once
 
   const loadHackathons = async () => {
     try {

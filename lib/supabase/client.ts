@@ -330,50 +330,92 @@ export const updateContractExtraction = async (extractionId: string, updates: an
   return { data, error }
 }
 
-// Real-time subscriptions
+// Real-time subscriptions with proper error handling and unique channel IDs
 export const subscribeToNotifications = (userId: string, callback: (payload: any) => void) => {
-  return supabase
-    .channel("notifications")
-    .on(
-      "postgres_changes",
-      {
-        event: "INSERT",
-        schema: "public",
-        table: "notifications",
-        filter: `user_id=eq.${userId}`,
-      },
-      callback,
-    )
-    .subscribe()
+  try {
+    // Create a unique channel ID for each subscription
+    const channelId = `notifications-${userId}-${Math.random().toString(36).substring(2, 9)}`
+
+    return supabase
+      .channel(channelId)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
+          filter: `user_id=eq.${userId}`,
+        },
+        (payload) => {
+          try {
+            callback(payload)
+          } catch (error) {
+            console.error("Error in notification callback:", error)
+          }
+        },
+      )
+      .subscribe()
+  } catch (error) {
+    console.error("Error creating notification subscription:", error)
+    return null
+  }
 }
 
-export const subscribeToQueryUpdates = (callback: (payload: any) => void) => {
-  return supabase
-    .channel("queries")
-    .on(
-      "postgres_changes",
-      {
-        event: "*",
-        schema: "public",
-        table: "queries",
-        filter: "visibility=eq.public",
-      },
-      callback,
-    )
-    .subscribe()
+export const subscribeToQueryUpdates = (uniqueId: string, callback: (payload: any) => void) => {
+  try {
+    // Use the provided unique ID for the channel
+    const channelId = `queries-${uniqueId}`
+
+    return supabase
+      .channel(channelId)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "queries",
+          filter: "visibility=eq.public",
+        },
+        (payload) => {
+          try {
+            callback(payload)
+          } catch (error) {
+            console.error("Error in query callback:", error)
+          }
+        },
+      )
+      .subscribe()
+  } catch (error) {
+    console.error("Error creating query subscription:", error)
+    return null
+  }
 }
 
-export const subscribeToHackathonUpdates = (callback: (payload: any) => void) => {
-  return supabase
-    .channel("hackathons")
-    .on(
-      "postgres_changes",
-      {
-        event: "*",
-        schema: "public",
-        table: "hackathons",
-      },
-      callback,
-    )
-    .subscribe()
+export const subscribeToHackathonUpdates = (uniqueId: string, callback: (payload: any) => void) => {
+  try {
+    // Use the provided unique ID for the channel
+    const channelId = `hackathons-${uniqueId}`
+
+    return supabase
+      .channel(channelId)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "hackathons",
+        },
+        (payload) => {
+          try {
+            callback(payload)
+          } catch (error) {
+            console.error("Error in hackathon callback:", error)
+          }
+        },
+      )
+      .subscribe()
+  } catch (error) {
+    console.error("Error creating hackathon subscription:", error)
+    return null
+  }
 }
