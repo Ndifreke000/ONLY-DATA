@@ -1,4 +1,3 @@
-
 # 🧠 Starklytics — Starknet Analytics & Research Platform
 
 **Starklytics** is a decentralized data analytics platform built for Starknet. It empowers analysts, researchers, and stakeholders to build and share insights using SQL and Python — backed by onchain data, STRK-based subscriptions, and deep social integrations.
@@ -89,16 +88,16 @@ Tech Stack: React + TypeScript + Tailwind CSS + Supabase + Edge Functions + Star
 ## 🛠️ Getting Started (Dev)
 
 ### 1. Clone Repo  
-```bash
+\`\`\`bash
 git clone https://github.com/your-org/starklytics.git
 cd starklytics
-````
+\`\`\``
 
 ### 2. Install Dependencies
 
-```bash
+\`\`\`bash
 pnpm install
-```
+\`\`\`
 
 ### 3. Set Up Supabase
 
@@ -108,9 +107,9 @@ pnpm install
 
 ### 4. Run Dev Server
 
-```bash
+\`\`\`bash
 pnpm dev
-```
+\`\`\`
 
 ---
 

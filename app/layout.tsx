@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://starklytics.com",
   },
-    generator: 'v0.dev'
+  generator: "v0.dev",
 }
 
 export default function RootLayout({
@@ -40,17 +40,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+    <html lang="en" suppressHydrationWarning className="h-full overflow-hidden">
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased h-full overflow-hidden`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange={false}>
           <SidebarProvider>
-            <div className="flex h-screen overflow-hidden">
+            <div className="flex h-screen w-screen overflow-hidden bg-background">
               <DuneSidebar />
-              <SidebarInset className="flex flex-col min-w-0">
+              <SidebarInset className="flex flex-col min-w-0 flex-1 h-full overflow-hidden">
                 <HackathonBanner />
                 <Header />
-                <main className="flex-1 overflow-auto">
-                  <div className="h-full w-full">{children}</div>
+                <main className="flex-1 overflow-auto w-full h-full bg-gradient-to-br from-background via-background to-orange-50/20 dark:to-orange-950/10">
+                  <div className="h-full w-full min-h-0">{children}</div>
                 </main>
               </SidebarInset>
             </div>

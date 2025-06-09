@@ -10,27 +10,38 @@ import { WalletConnectButton } from "@/components/wallet/wallet-connect-button"
 import { useTheme } from "next-themes"
 import { motion } from "framer-motion"
 import { useNotifications } from "@/hooks/use-notifications"
+import { useEffect, useState } from "react"
 
 export function Header() {
   const { theme, setTheme } = useTheme()
   const { state } = useSidebar()
   const { notifications, unreadCount, markAsRead } = useNotifications()
+  const [sidebarPadding, setSidebarPadding] = useState("pl-0")
+
+  // Enhanced padding logic based on sidebar state
+  useEffect(() => {
+    if (state === "collapsed") {
+      setSidebarPadding("pl-20") // Account for collapsed sidebar width + extra spacing
+    } else {
+      setSidebarPadding("pl-6") // Standard padding when sidebar is expanded
+    }
+  }, [state])
 
   return (
     <motion.header
       initial={{ y: -10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 transition-all duration-200"
+      className={`flex h-16 items-center justify-between px-6 ${sidebarPadding} transition-all duration-300 ease-in-out`}
     >
-      <div className="flex h-16 items-center justify-between px-6">
+      <div className="flex h-16 items-center justify-between px-6 transition-all duration-300">
         <div className="flex items-center gap-4">
           <SidebarTrigger className="transition-all duration-200 hover:bg-accent/80 rounded-lg" />
-          <div className="relative max-w-md flex-1">
+          <div className="relative max-w-md flex-1 ml-4">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Search queries, contracts, users..."
-              className="pl-10 pr-12 w-full md:w-[350px] lg:w-[450px] h-10 rounded-xl border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-200 focus:ring-2 focus:ring-[#6366f1]/20 focus:border-[#6366f1]/50"
+              className="pl-10 pr-12 w-full md:w-[300px] lg:w-[400px] xl:w-[500px] h-10 rounded-xl border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 focus:ring-2 focus:ring-[#6366f1]/20 focus:border-[#6366f1]/50"
             />
             <kbd className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none inline-flex h-6 select-none items-center gap-1 rounded-md border border-border/50 bg-muted/50 px-2 font-mono text-xs font-medium text-muted-foreground">
               <Command className="h-3 w-3" />K

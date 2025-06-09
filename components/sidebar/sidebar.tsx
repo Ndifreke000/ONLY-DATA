@@ -62,16 +62,20 @@ export function DuneSidebar() {
       variant="sidebar"
       collapsible="icon"
     >
-      <SidebarHeader className="p-6 border-b border-border/50 group-data-[collapsible=icon]:p-3">
+      {/* Header - Enhanced spacing and clear separation */}
+      <SidebarHeader className="p-6 border-b border-border/50 group-data-[collapsible=icon]:p-4 group-data-[collapsible=icon]:pb-6">
         <motion.div
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center"
+          className="flex items-center gap-4 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:gap-2"
         >
-          <Link href="/" className="flex items-center gap-3 group-data-[collapsible=icon]:gap-0">
-            <div className="relative">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 shadow-lg shadow-orange-500/25">
-                <Star className="h-5 w-5 text-white" />
+          <Link
+            href="/"
+            className="flex items-center gap-4 group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:gap-2"
+          >
+            <div className="relative flex-shrink-0">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 shadow-lg shadow-orange-500/25 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10">
+                <Star className="h-6 w-6 text-white group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
               </div>
               <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 opacity-20 blur-sm"></div>
             </div>
@@ -85,26 +89,28 @@ export function DuneSidebar() {
         </motion.div>
       </SidebarHeader>
 
-      <SidebarContent className="px-4 py-2">
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2">
+      {/* Content - Enhanced spacing and clear icon separation */}
+      <SidebarContent className="px-4 py-6 group-data-[collapsible=icon]:px-3 group-data-[collapsible=icon]:py-4">
+        {/* Analytics Section */}
+        <SidebarGroup className="mb-8 group-data-[collapsible=icon]:mb-6">
+          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-4 px-4 group-data-[collapsible=icon]:hidden">
             Analytics
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
+            <SidebarMenu className="space-y-3 group-data-[collapsible=icon]:space-y-4">
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === "/dashboard"}
                   tooltip="Dashboard"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <LayoutDashboard className="h-5 w-5 text-orange-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Dashboard</span>
+                    <LayoutDashboard className="h-6 w-6 text-orange-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Dashboard</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -114,17 +120,23 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/starknet-explorer"}
                   tooltip="Starknet Explorer"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:relative"
                 >
                   <Link
                     href="/starknet-explorer"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <Activity className="h-5 w-5 text-red-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Starknet Explorer</span>
-                    <Badge className="ml-auto bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300 text-xs px-1.5 py-0.5 group-data-[collapsible=icon]:hidden">
+                    <Activity className="h-6 w-6 text-red-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">
+                      Starknet Explorer
+                    </span>
+                    <Badge className="ml-auto bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300 text-xs px-2 py-1 group-data-[collapsible=icon]:hidden">
                       LIVE
                     </Badge>
+                    {/* Enhanced badge for collapsed state */}
+                    <div className="hidden group-data-[collapsible=icon]:block absolute -top-2 -right-2">
+                      <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-background shadow-lg"></div>
+                    </div>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -134,14 +146,14 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/explore"}
                   tooltip="Explore Contracts"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/explore"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <BarChart3 className="h-5 w-5 text-pink-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Explore</span>
+                    <BarChart3 className="h-6 w-6 text-pink-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Explore</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -151,14 +163,16 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/contract-analyzer"}
                   tooltip="Contract Analyzer"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/contract-analyzer"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <Zap className="h-5 w-5 text-purple-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Contract Analyzer</span>
+                    <Zap className="h-6 w-6 text-purple-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">
+                      Contract Analyzer
+                    </span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -168,14 +182,14 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/data-visualizer"}
                   tooltip="Data Visualizer"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/data-visualizer"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <Database className="h-5 w-5 text-blue-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Data Visualizer</span>
+                    <Database className="h-6 w-6 text-blue-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Data Visualizer</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -185,14 +199,14 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/data-pipeline"}
                   tooltip="Data Pipeline"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/data-pipeline"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <FileCode className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Data Pipeline</span>
+                    <FileCode className="h-6 w-6 text-green-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Data Pipeline</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -200,27 +214,28 @@ export function DuneSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="my-4 bg-border/50" />
+        <SidebarSeparator className="my-6 bg-border/50 group-data-[collapsible=icon]:mx-4 group-data-[collapsible=icon]:my-4" />
 
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2">
+        {/* Platform Section */}
+        <SidebarGroup className="mb-8 group-data-[collapsible=icon]:mb-6">
+          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-4 px-4 group-data-[collapsible=icon]:hidden">
             Platform
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
+            <SidebarMenu className="space-y-3 group-data-[collapsible=icon]:space-y-4">
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === "/marketplace"}
                   tooltip="Data Marketplace"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/marketplace"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <ShoppingBag className="h-5 w-5 text-emerald-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Marketplace</span>
+                    <ShoppingBag className="h-6 w-6 text-emerald-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Marketplace</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -230,25 +245,31 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/hackathons"}
                   tooltip="Hackathons"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:relative"
                 >
                   <Link
                     href="/hackathons"
-                    className="flex items-center gap-3 w-full relative group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <Trophy className="h-5 w-5 text-amber-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Hackathons</span>
+                    <Trophy className="h-6 w-6 text-amber-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Hackathons</span>
                     {hasActiveHackathon && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                        className="ml-auto group-data-[collapsible=icon]:absolute group-data-[collapsible=icon]:-top-1 group-data-[collapsible=icon]:-right-1 group-data-[collapsible=icon]:ml-0"
-                      >
-                        <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs px-2 py-1 rounded-full animate-pulse shadow-lg">
-                          Live
-                        </Badge>
-                      </motion.div>
+                      <>
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                          className="ml-auto group-data-[collapsible=icon]:hidden"
+                        >
+                          <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs px-2 py-1 rounded-full animate-pulse shadow-lg">
+                            Live
+                          </Badge>
+                        </motion.div>
+                        {/* Enhanced badge for collapsed state */}
+                        <div className="hidden group-data-[collapsible=icon]:block absolute -top-2 -right-2">
+                          <div className="w-4 h-4 bg-amber-500 rounded-full animate-pulse border-2 border-background shadow-lg"></div>
+                        </div>
+                      </>
                     )}
                   </Link>
                 </SidebarMenuButton>
@@ -259,14 +280,14 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/library"}
                   tooltip="Data Library"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/library"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <BookOpen className="h-5 w-5 text-indigo-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Library</span>
+                    <BookOpen className="h-6 w-6 text-indigo-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Library</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -276,14 +297,14 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/workspaces"}
                   tooltip="Workspaces"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/workspaces"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <Users className="h-5 w-5 text-cyan-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Workspaces</span>
+                    <Users className="h-6 w-6 text-cyan-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Workspaces</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -291,27 +312,28 @@ export function DuneSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="my-4 bg-border/50" />
+        <SidebarSeparator className="my-6 bg-border/50 group-data-[collapsible=icon]:mx-4 group-data-[collapsible=icon]:my-4" />
 
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2">
+        {/* Resources Section */}
+        <SidebarGroup className="mb-6 group-data-[collapsible=icon]:mb-4">
+          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-4 px-4 group-data-[collapsible=icon]:hidden">
             Resources
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
+            <SidebarMenu className="space-y-3 group-data-[collapsible=icon]:space-y-4">
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === "/documentation"}
                   tooltip="Documentation"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/documentation"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <Code2 className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Docs</span>
+                    <Code2 className="h-6 w-6 text-green-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Docs</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -321,14 +343,14 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/support"}
                   tooltip="Support"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/support"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <HelpCircle className="h-5 w-5 text-orange-500 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">Support</span>
+                    <HelpCircle className="h-6 w-6 text-orange-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Support</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -337,16 +359,16 @@ export function DuneSidebar() {
                 <SidebarMenuButton
                   asChild
                   tooltip="GitHub"
-                  className="h-10 rounded-xl transition-all duration-200 hover:bg-accent/80 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
+                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <a
                     href="https://github.com/starklytics"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                   >
-                    <Github className="h-5 w-5 text-slate-600 dark:text-slate-400 flex-shrink-0" />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">GitHub</span>
+                    <Github className="h-6 w-6 text-slate-600 dark:text-slate-400 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">GitHub</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -355,16 +377,17 @@ export function DuneSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-border/50 group-data-[collapsible=icon]:p-2">
+      {/* Footer - Enhanced spacing and clear separation */}
+      <SidebarFooter className="p-6 border-t border-border/50 group-data-[collapsible=icon]:p-4">
         {user && profile ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-3 p-4 h-auto w-full justify-start hover:bg-accent/80 transition-all duration-200 rounded-xl border border-transparent hover:border-border/50 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10"
+                className="flex items-center gap-4 p-4 h-auto w-full justify-start hover:bg-accent/80 transition-all duration-200 rounded-xl border border-transparent hover:border-border/50 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center"
               >
-                <div className="relative">
-                  <Avatar className="h-10 w-10 ring-2 ring-border/50 group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:w-8">
+                <div className="relative flex-shrink-0">
+                  <Avatar className="h-12 w-12 ring-2 ring-border/50 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10">
                     <AvatarImage src={profile.avatar_url || "/placeholder.svg"} />
                     <AvatarFallback className="bg-gradient-to-br from-orange-500 to-pink-500 text-white font-semibold">
                       {profile.full_name?.slice(0, 2).toUpperCase() ||
@@ -403,17 +426,17 @@ export function DuneSidebar() {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <div className="space-y-2 group-data-[collapsible=icon]:space-y-1">
+          <div className="space-y-3 group-data-[collapsible=icon]:space-y-2">
             <Link href="/auth/signin">
-              <Button className="w-full h-12 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-orange-500/25 transition-all duration-200 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0">
+              <Button className="w-full h-14 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-orange-500/25 transition-all duration-200 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto">
                 <span className="group-data-[collapsible=icon]:hidden">Sign In</span>
-                <span className="hidden group-data-[collapsible=icon]:block text-lg">→</span>
+                <span className="hidden group-data-[collapsible=icon]:block text-xl">→</span>
               </Button>
             </Link>
             <Link href="/auth/signup" className="group-data-[collapsible=icon]:hidden">
               <Button
                 variant="outline"
-                className="w-full h-10 rounded-xl border-border/50 hover:bg-accent/50 transition-all duration-200"
+                className="w-full h-12 rounded-xl border-border/50 hover:bg-accent/50 transition-all duration-200"
               >
                 Create Account
               </Button>
