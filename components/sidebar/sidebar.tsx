@@ -20,7 +20,7 @@ import {
   Star,
   Activity,
 } from "lucide-react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 import {
   Sidebar,
@@ -50,6 +50,33 @@ import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/hooks/use-auth"
 import { useHackathons } from "@/hooks/use-hackathons"
 
+// Enhanced icon animation variants
+const iconVariants = {
+  rest: { scale: 1, rotate: 0 },
+  hover: {
+    scale: 1.1,
+    rotate: [0, -5, 5, 0],
+    transition: {
+      duration: 0.3,
+      rotate: { duration: 0.6, ease: "easeInOut" },
+    },
+  },
+  tap: { scale: 0.95 },
+}
+
+const badgeVariants = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 500,
+      damping: 30,
+    },
+  },
+}
+
 export function DuneSidebar() {
   const pathname = usePathname()
   const { user, profile, signOut } = useAuth()
@@ -58,11 +85,12 @@ export function DuneSidebar() {
 
   return (
     <Sidebar
-      className="border-r border-border/50 bg-gradient-to-b from-background via-background to-orange-50/20 dark:to-orange-950/10"
+      className="border-r border-border/50 bg-gradient-to-b from-background via-background to-orange-50/20 dark:to-orange-950/10 shadow-lg"
       variant="sidebar"
       collapsible="icon"
+      side="left"
     >
-      {/* Header - Enhanced spacing and clear separation */}
+      {/* Header - Enhanced with animations */}
       <SidebarHeader className="p-6 border-b border-border/50 group-data-[collapsible=icon]:p-4 group-data-[collapsible=icon]:pb-6">
         <motion.div
           whileHover={{ scale: 1.02 }}
@@ -73,44 +101,72 @@ export function DuneSidebar() {
             href="/"
             className="flex items-center gap-4 group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:gap-2"
           >
-            <div className="relative flex-shrink-0">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 shadow-lg shadow-orange-500/25 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10">
-                <Star className="h-6 w-6 text-white group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
+            <motion.div
+              className="relative flex-shrink-0"
+              whileHover={{ rotate: 360 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 shadow-lg shadow-orange-500/25 group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:w-8">
+                <Star className="h-5 w-5 text-white group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:w-4" />
               </div>
               <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 opacity-20 blur-sm"></div>
-            </div>
-            <div className="flex flex-col group-data-[collapsible=icon]:hidden">
-              <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent">
-                Starklytics
-              </span>
-              <span className="text-xs text-muted-foreground font-medium">Your Home for Only Data</span>
-            </div>
+            </motion.div>
+            <AnimatePresence>
+              {state !== "collapsed" && (
+                <motion.div
+                  className="flex flex-col"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent">
+                    Starklytics
+                  </span>
+                  <span className="text-xs text-muted-foreground font-medium">Your Home for Only Data</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Link>
         </motion.div>
       </SidebarHeader>
 
-      {/* Content - Enhanced spacing and clear icon separation */}
-      <SidebarContent className="px-4 py-6 group-data-[collapsible=icon]:px-3 group-data-[collapsible=icon]:py-4">
+      {/* Content - Enhanced with better spacing and animations */}
+      <SidebarContent className="px-4 py-6 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:py-4 overflow-y-auto">
         {/* Analytics Section */}
         <SidebarGroup className="mb-8 group-data-[collapsible=icon]:mb-6">
           <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-4 px-4 group-data-[collapsible=icon]:hidden">
             Analytics
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-3 group-data-[collapsible=icon]:space-y-4">
+            <SidebarMenu className="space-y-2 group-data-[collapsible=icon]:space-y-3">
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === "/dashboard"}
                   tooltip="Dashboard"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/15 data-[active=true]:to-pink-500/15 data-[active=true]:border data-[active=true]:border-orange-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <LayoutDashboard className="h-6 w-6 text-orange-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Dashboard</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <LayoutDashboard className="h-5 w-5 text-orange-600 dark:text-orange-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Dashboard
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -120,23 +176,51 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/starknet-explorer"}
                   tooltip="Starknet Explorer"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:relative"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-red-500/15 data-[active=true]:to-orange-500/15 data-[active=true]:border data-[active=true]:border-red-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:relative"
                 >
                   <Link
                     href="/starknet-explorer"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <Activity className="h-6 w-6 text-red-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">
-                      Starknet Explorer
-                    </span>
-                    <Badge className="ml-auto bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300 text-xs px-2 py-1 group-data-[collapsible=icon]:hidden">
-                      LIVE
-                    </Badge>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <Activity className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Starknet Explorer
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.div variants={badgeVariants} initial="hidden" animate="visible" exit="hidden">
+                          <Badge className="ml-auto bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300 text-xs px-2 py-1 animate-pulse">
+                            LIVE
+                          </Badge>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                     {/* Enhanced badge for collapsed state */}
-                    <div className="hidden group-data-[collapsible=icon]:block absolute -top-2 -right-2">
-                      <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-background shadow-lg"></div>
-                    </div>
+                    <AnimatePresence>
+                      {state === "collapsed" && (
+                        <motion.div
+                          className="absolute -top-2 -right-2"
+                          variants={badgeVariants}
+                          initial="hidden"
+                          animate="visible"
+                          exit="hidden"
+                        >
+                          <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-background shadow-lg"></div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -146,14 +230,28 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/explore"}
                   tooltip="Explore Contracts"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-pink-500/15 data-[active=true]:to-purple-500/15 data-[active=true]:border data-[active=true]:border-pink-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/explore"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <BarChart3 className="h-6 w-6 text-pink-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Explore</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <BarChart3 className="h-5 w-5 text-pink-600 dark:text-pink-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Explore
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -163,16 +261,28 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/contract-analyzer"}
                   tooltip="Contract Analyzer"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-purple-500/15 data-[active=true]:to-indigo-500/15 data-[active=true]:border data-[active=true]:border-purple-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/contract-analyzer"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <Zap className="h-6 w-6 text-purple-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">
-                      Contract Analyzer
-                    </span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <Zap className="h-5 w-5 text-purple-600 dark:text-purple-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Contract Analyzer
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -182,14 +292,28 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/data-visualizer"}
                   tooltip="Data Visualizer"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-blue-500/15 data-[active=true]:to-cyan-500/15 data-[active=true]:border data-[active=true]:border-blue-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/data-visualizer"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <Database className="h-6 w-6 text-blue-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Data Visualizer</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <Database className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Data Visualizer
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -199,14 +323,28 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/data-pipeline"}
                   tooltip="Data Pipeline"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-green-500/15 data-[active=true]:to-emerald-500/15 data-[active=true]:border data-[active=true]:border-green-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/data-pipeline"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <FileCode className="h-6 w-6 text-green-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Data Pipeline</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <FileCode className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Data Pipeline
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -214,7 +352,7 @@ export function DuneSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="my-6 bg-border/50 group-data-[collapsible=icon]:mx-4 group-data-[collapsible=icon]:my-4" />
+        <SidebarSeparator className="my-6 bg-border/50 group-data-[collapsible=icon]:mx-2 group-data-[collapsible=icon]:my-4" />
 
         {/* Platform Section */}
         <SidebarGroup className="mb-8 group-data-[collapsible=icon]:mb-6">
@@ -222,20 +360,34 @@ export function DuneSidebar() {
             Platform
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-3 group-data-[collapsible=icon]:space-y-4">
+            <SidebarMenu className="space-y-2 group-data-[collapsible=icon]:space-y-3">
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === "/marketplace"}
                   tooltip="Data Marketplace"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-emerald-500/15 data-[active=true]:to-teal-500/15 data-[active=true]:border data-[active=true]:border-emerald-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/marketplace"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <ShoppingBag className="h-6 w-6 text-emerald-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Marketplace</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <ShoppingBag className="h-5 w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Marketplace
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -245,30 +397,53 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/hackathons"}
                   tooltip="Hackathons"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:relative"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-amber-500/15 data-[active=true]:to-yellow-500/15 data-[active=true]:border data-[active=true]:border-amber-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:relative"
                 >
                   <Link
                     href="/hackathons"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <Trophy className="h-6 w-6 text-amber-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Hackathons</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <Trophy className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Hackathons
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                     {hasActiveHackathon && (
                       <>
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                          className="ml-auto group-data-[collapsible=icon]:hidden"
-                        >
-                          <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs px-2 py-1 rounded-full animate-pulse shadow-lg">
-                            Live
-                          </Badge>
-                        </motion.div>
+                        <AnimatePresence>
+                          {state !== "collapsed" && (
+                            <motion.div variants={badgeVariants} initial="hidden" animate="visible" exit="hidden">
+                              <Badge className="ml-auto bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs px-2 py-1 rounded-full animate-pulse shadow-lg">
+                                Live
+                              </Badge>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                         {/* Enhanced badge for collapsed state */}
-                        <div className="hidden group-data-[collapsible=icon]:block absolute -top-2 -right-2">
-                          <div className="w-4 h-4 bg-amber-500 rounded-full animate-pulse border-2 border-background shadow-lg"></div>
-                        </div>
+                        <AnimatePresence>
+                          {state === "collapsed" && (
+                            <motion.div
+                              className="absolute -top-2 -right-2"
+                              variants={badgeVariants}
+                              initial="hidden"
+                              animate="visible"
+                              exit="hidden"
+                            >
+                              <div className="w-4 h-4 bg-amber-500 rounded-full animate-pulse border-2 border-background shadow-lg"></div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </>
                     )}
                   </Link>
@@ -280,14 +455,28 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/library"}
                   tooltip="Data Library"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-indigo-500/15 data-[active=true]:to-blue-500/15 data-[active=true]:border data-[active=true]:border-indigo-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/library"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <BookOpen className="h-6 w-6 text-indigo-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Library</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <BookOpen className="h-5 w-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Library
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -297,14 +486,28 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/workspaces"}
                   tooltip="Workspaces"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-cyan-500/15 data-[active=true]:to-blue-500/15 data-[active=true]:border data-[active=true]:border-cyan-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/workspaces"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <Users className="h-6 w-6 text-cyan-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Workspaces</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <Users className="h-5 w-5 text-cyan-600 dark:text-cyan-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Workspaces
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -312,7 +515,7 @@ export function DuneSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="my-6 bg-border/50 group-data-[collapsible=icon]:mx-4 group-data-[collapsible=icon]:my-4" />
+        <SidebarSeparator className="my-6 bg-border/50 group-data-[collapsible=icon]:mx-2 group-data-[collapsible=icon]:my-4" />
 
         {/* Resources Section */}
         <SidebarGroup className="mb-6 group-data-[collapsible=icon]:mb-4">
@@ -320,20 +523,34 @@ export function DuneSidebar() {
             Resources
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-3 group-data-[collapsible=icon]:space-y-4">
+            <SidebarMenu className="space-y-2 group-data-[collapsible=icon]:space-y-3">
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === "/documentation"}
                   tooltip="Documentation"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-green-500/15 data-[active=true]:to-emerald-500/15 data-[active=true]:border data-[active=true]:border-green-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/documentation"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <Code2 className="h-6 w-6 text-green-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Docs</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <Code2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Docs
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -343,14 +560,28 @@ export function DuneSidebar() {
                   asChild
                   isActive={pathname === "/support"}
                   tooltip="Support"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/10 data-[active=true]:to-pink-500/10 data-[active=true]:border data-[active=true]:border-orange-500/20 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500/15 data-[active=true]:to-red-500/15 data-[active=true]:border data-[active=true]:border-orange-500/30 data-[active=true]:shadow-lg group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <Link
                     href="/support"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <HelpCircle className="h-6 w-6 text-orange-500 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">Support</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <HelpCircle className="h-5 w-5 text-orange-600 dark:text-orange-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Support
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -359,16 +590,30 @@ export function DuneSidebar() {
                 <SidebarMenuButton
                   asChild
                   tooltip="GitHub"
-                  className="h-14 rounded-xl transition-all duration-200 hover:bg-accent/80 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
+                  className="h-12 rounded-xl transition-all duration-300 hover:bg-accent/80 hover:shadow-md group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
                 >
                   <a
                     href="https://github.com/starklytics"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-4 w-full px-5 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                    className="flex items-center gap-4 w-full px-4 py-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:h-full"
                   >
-                    <Github className="h-6 w-6 text-slate-600 dark:text-slate-400 flex-shrink-0 group-data-[collapsible=icon]:h-5 group-data-[collapsible=icon]:w-5" />
-                    <span className="font-medium text-base group-data-[collapsible=icon]:hidden">GitHub</span>
+                    <motion.div variants={iconVariants} initial="rest" whileHover="hover" whileTap="tap">
+                      <Github className="h-5 w-5 text-slate-600 dark:text-slate-400 flex-shrink-0 drop-shadow-sm" />
+                    </motion.div>
+                    <AnimatePresence>
+                      {state !== "collapsed" && (
+                        <motion.span
+                          className="font-medium text-base"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          GitHub
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -377,31 +622,49 @@ export function DuneSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Footer - Enhanced spacing and clear separation */}
+      {/* Footer - Enhanced with animations */}
       <SidebarFooter className="p-6 border-t border-border/50 group-data-[collapsible=icon]:p-4">
         {user && profile ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="flex items-center gap-4 p-4 h-auto w-full justify-start hover:bg-accent/80 transition-all duration-200 rounded-xl border border-transparent hover:border-border/50 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center"
-              >
-                <div className="relative flex-shrink-0">
-                  <Avatar className="h-12 w-12 ring-2 ring-border/50 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10">
-                    <AvatarImage src={profile.avatar_url || "/placeholder.svg"} />
-                    <AvatarFallback className="bg-gradient-to-br from-orange-500 to-pink-500 text-white font-semibold">
-                      {profile.full_name?.slice(0, 2).toUpperCase() ||
-                        profile.username?.slice(0, 2).toUpperCase() ||
-                        "SA"}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-background group-data-[collapsible=icon]:h-3 group-data-[collapsible=icon]:w-3"></div>
-                </div>
-                <div className="flex-1 text-left group-data-[collapsible=icon]:hidden">
-                  <p className="text-sm font-semibold">{profile.full_name || profile.username || "Stark Analyst"}</p>
-                  <p className="text-xs text-muted-foreground">{user.email}</p>
-                </div>
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-4 p-3 h-auto w-full justify-start hover:bg-accent/80 transition-all duration-200 rounded-xl border border-transparent hover:border-border/50 hover:shadow-md group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center"
+                >
+                  <div className="relative flex-shrink-0">
+                    <Avatar className="h-10 w-10 ring-2 ring-border/50 group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:w-8">
+                      <AvatarImage src={profile.avatar_url || "/placeholder.svg"} />
+                      <AvatarFallback className="bg-gradient-to-br from-orange-500 to-pink-500 text-white font-semibold">
+                        {profile.full_name?.slice(0, 2).toUpperCase() ||
+                          profile.username?.slice(0, 2).toUpperCase() ||
+                          "SA"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <motion.div
+                      className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-background group-data-[collapsible=icon]:h-3 group-data-[collapsible=icon]:w-3"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                    />
+                  </div>
+                  <AnimatePresence>
+                    {state !== "collapsed" && (
+                      <motion.div
+                        className="flex-1 text-left"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <p className="text-sm font-semibold">
+                          {profile.full_name || profile.username || "Stark Analyst"}
+                        </p>
+                        <p className="text-xs text-muted-foreground">{user.email}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Button>
+              </motion.div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-64 p-2">
               <DropdownMenuLabel className="font-semibold">My Account</DropdownMenuLabel>
@@ -428,19 +691,54 @@ export function DuneSidebar() {
         ) : (
           <div className="space-y-3 group-data-[collapsible=icon]:space-y-2">
             <Link href="/auth/signin">
-              <Button className="w-full h-14 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-orange-500/25 transition-all duration-200 group-data-[collapsible=icon]:w-14 group-data-[collapsible=icon]:h-14 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:mx-auto">
-                <span className="group-data-[collapsible=icon]:hidden">Sign In</span>
-                <span className="hidden group-data-[collapsible=icon]:block text-xl">→</span>
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button className="w-full h-12 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-orange-500/25 transition-all duration-200 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:text-sm">
+                  <AnimatePresence mode="wait">
+                    {state !== "collapsed" ? (
+                      <motion.span
+                        key="signin-text"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        Sign In
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="signin-arrow"
+                        initial={{ opacity: 0, rotate: -90 }}
+                        animate={{ opacity: 1, rotate: 0 }}
+                        exit={{ opacity: 0, rotate: 90 }}
+                        transition={{ duration: 0.2 }}
+                        className="text-xl"
+                      >
+                        →
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </Button>
+              </motion.div>
             </Link>
-            <Link href="/auth/signup" className="group-data-[collapsible=icon]:hidden">
-              <Button
-                variant="outline"
-                className="w-full h-12 rounded-xl border-border/50 hover:bg-accent/50 transition-all duration-200"
-              >
-                Create Account
-              </Button>
-            </Link>
+            <AnimatePresence>
+              {state !== "collapsed" && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link href="/auth/signup">
+                    <Button
+                      variant="outline"
+                      className="w-full h-12 rounded-xl border-border/50 hover:bg-accent/50 transition-all duration-200"
+                    >
+                      Create Account
+                    </Button>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </SidebarFooter>

@@ -32,6 +32,7 @@ export const metadata: Metadata = {
     url: "https://starklytics.com",
   },
   generator: "v0.dev",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
 }
 
 export default function RootLayout({
@@ -41,21 +42,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="h-full overflow-hidden">
-      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased h-full overflow-hidden`}>
+      <body
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased h-full overflow-hidden touch-manipulation`}
+      >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange={false}>
-          <SidebarProvider>
+          <SidebarProvider defaultOpen={false}>
             <div className="flex h-screen w-screen overflow-hidden bg-background">
               <DuneSidebar />
               <SidebarInset className="flex flex-col min-w-0 flex-1 h-full overflow-hidden">
                 <HackathonBanner />
                 <Header />
-                <main className="flex-1 overflow-auto w-full h-full bg-gradient-to-br from-background via-background to-orange-50/20 dark:to-orange-950/10">
-                  <div className="h-full w-full min-h-0">{children}</div>
+                <main className="flex-1 overflow-auto w-full h-full bg-gradient-to-br from-background via-background to-orange-50/20 dark:to-orange-950/10 overscroll-behavior-contain">
+                  <div className="h-full w-full min-h-0 safe-area-inset">{children}</div>
                 </main>
               </SidebarInset>
             </div>
           </SidebarProvider>
-          <Toaster theme="system" position="top-right" />
+          <Toaster
+            theme="system"
+            position="top-right"
+            className="sm:right-4 sm:top-4 right-2 top-2"
+            toastOptions={{
+              className: "text-sm sm:text-base",
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>
