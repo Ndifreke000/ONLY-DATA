@@ -142,3 +142,5 @@ pnpm dev
 
 MIT License © 2025 Starklytics Contributors
 Built with ❤️ for the Starknet ecosystem.
+
+![image](https://github.com/user-attachments/assets/64e15194-04c4-4369-92f7-da2c83247761)
